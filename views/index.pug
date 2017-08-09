@@ -1,0 +1,31 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title Document
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/styles.css')
+
+  body
+    .container
+      .form-group.col-md-4.col-md-offset-4
+        h1
+          | To-Do
+          small List
+        form(role='form', action='/tasks', method='POST')
+          .input-group
+            input.form-control.input-lg(type='text', placeholder='Type a new task...', name='task', autofocus)
+            span.input-group-btn
+              button.btn.btn-primary.input-lg(type='button') Add Task!
+      div.col-md-4.col-md-offset-4
+        ul#todo.list-group
+          each task in tasks
+            li.list-group-item.task-item(class= task.done && 'task-done')
+              button.done.btn.btn-primary done
+              span= task.title
+              input.task-id(type='hidden', value=task.id)
+              button.remove.btn.btn-danger.pull-right remove
+
+    script(src="https://code.jquery.com/jquery-2.0.3.min.js")
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src='/js/main.js')

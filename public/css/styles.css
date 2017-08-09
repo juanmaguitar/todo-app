@@ -1,0 +1,33 @@
+.container {
+  padding-bottom: 50px;
+}
+form {
+    display: inline-block;
+}
+.form-group {
+    text-align: center;
+    padding-bottom: 25px;
+}
+#todo {
+    margin: 0 auto;
+    width: 500px;
+}
+
+a.close {
+  float: right;
+}
+
+.task-item span {
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+.task-item:hover {
+  background: #eee;
+}
+
+.task-done {
+  background: #CCC;
+  text-decoration: line-through;
+}
+
