@@ -23,6 +23,7 @@ html(lang='en')
             li.list-group-item.task-item(class= task.done && 'task-done')
               button.done.btn.btn-primary done
               span= task.title
+              small= moment(task.createdAt).format('DD-MM-YYYY hh:mm:ss')
               input.task-id(type='hidden', value=task.id)
               button.remove.btn.btn-danger.pull-right remove
 

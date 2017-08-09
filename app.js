@@ -1,66 +1,43 @@
-const express = require('express');
+const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const moment = require('moment')
+const session = require('express-session')
+const FileStore = require('session-file-store')(session)
 
 const app = express()
 const pathPublic = path.join(__dirname, 'public')
 const PORT = 3000
 
-app.use( express.static(pathPublic) )
-app.use( bodyParser.urlencoded({ extended: false }) )
-app.use( bodyParser.json() )
+app.use(express.static(pathPublic))
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(session({
+  name: 'todo-app-session-cookie-id',
+  secret: 'my-secret',
+  store: new FileStore()
+}))
 
 app.set('view engine', 'pug')
+app.locals.moment = moment
 
-let tasks = [
-  {
-    id: 1,
-    title: 'buy milk',
-    done: false,
-    createdAt: +(new Date())
-  },
-  {
-    id: 2,
-    title: 'buy gold',
-    done: false,
-    createdAt: +(new Date())
-  },
-  {
-    id: 3,
-    title: 'buy bitcoins',
-    done: true,
-    createdAt: +(new Date())
-  }
-]
-
-let counter = 3
-
-app.get('/', (req,res) => {
-  res.render('index', { tasks })
+app.use((req, res, next) => {
+  req.session.tasks = req.session.tasks ? req.session.tasks : require('./data/tasks.json')
+  next()
 })
 
-app.post('/tasks', (req,res) => {
-  const title = req.body.task
-  const newTask = {
-    id: ++counter,
-    title,
-    done: false,
-    createdAt: +(new Date())
-  }
-  tasks.push(newTask)
-  res.redirect('/')
-})
+app.use(require('./routes/tasks/'))
 
-app.delete('/task/:id', (req,res) => {
+app.delete('/task/:id', (req, res) => {
   const id = +req.params.id
-  tasks = tasks.filter( task => task.id !== id )
+  req.session.tasks = req.session.tasks.filter(task => task.id !== id)
   res.send(`element w/ id ${id} has been removed`)
 })
 
-app.put('/task/:id', (req,res) => {
+app.put('/task/:id', (req, res) => {
   const id = +req.params.id
   const done = req.body.done === 'true' ? true : false
-  tasks = tasks.map( task => {
+  req.session.tasks = req.session.tasks.map(task => {
     if (task.id === id) task.done = done
     return task
   })

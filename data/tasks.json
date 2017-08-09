@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "buy milk",
+    "done": false,
+    "createdAt": 1502266402631
+  },
+  {
+    "id": 2,
+    "title": "buy gold",
+    "done": false,
+    "createdAt": 1502266406613
+  },
+  {
+    "id": 3,
+    "title": "buy bitcoins",
+    "done": true,
+    "createdAt": 1502266407204
+  }
+]
